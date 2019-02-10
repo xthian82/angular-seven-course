@@ -1,17 +1,19 @@
 <div class="row">
   <div class="col-xs-12">
-    <form [formGroup]="recipeForm" (ngSubmit)="onSubmitForm()">
+    <form (ngSubmit)="onSubmitForm()" [formGroup]="recipeForm">
       <div class="row">
         <div class="col-xs-12">
           <button
-            type="submit"
             [disabled]="!recipeForm.valid"
-            class="btn btn-success">Save</button>
+            class="btn btn-success"
+            type="submit">Save
+          </button>
           &nbsp;
           <button
-            type="button"
             (click)="onCancel()"
-            class="btn btn-danger">Cancel</button>
+            class="btn btn-danger"
+            type="button">Cancel
+          </button>
         </div>
       </div>
       <div class="row">
@@ -19,10 +21,10 @@
           <div class="form-group">
             <label for="name">Name</label>
             <input
-              type="text"
-              id="name"
+              class="form-control"
               formControlName="name"
-              class="form-control">
+              id="name"
+              type="text">
           </div>
         </div>
       </div>
@@ -31,11 +33,11 @@
           <div class="form-group">
             <label for="imagePath">Image URL</label>
             <input
-              type="text"
-              id="imagePath"
-              formControlName="imagePath"
               #imagePath
-              class="form-control">
+              class="form-control"
+              formControlName="imagePath"
+              id="imagePath"
+              type="text">
           </div>
         </div>
       </div>
@@ -51,11 +53,11 @@
           <div class="form-group">
             <label for="description">Description</label>
             <textarea
-              type="text"
-              id="description"
-              formControlName="description"
               class="form-control"
-              rows="6">
+              formControlName="description"
+              id="description"
+              rows="6"
+              type="text">
             </textarea>
           </div>
         </div>
@@ -64,35 +66,37 @@
       <div class="row">
         <div class="col-xs-12" formArrayName="ingredients">
           <div
-            class="row"
             *ngFor="let ingredientControl of getControls(); let i = index"
-            [formGroupName]="i">
+            [formGroupName]="i"
+            class="row">
             <div class="col-xs-8">
               <input
-                type="text"
+                class="form-control"
                 formControlName="name"
-                class="form-control">
+                type="text">
             </div>
             <div class="col-xs-2">
               <input
-                type="number"
+                class="form-control"
                 formControlName="amount"
-                class="form-control">
+                type="number">
             </div>
             <div class="col-xs-2">
               <button
-                type="button"
+                (click)="oneDeleteIngredient(i)"
                 class="btn btn-danger"
-                (click)="oneDeleteIngredient(i)">X</button>
+                type="button">X
+              </button>
             </div>
           </div>
           <hr>
           <div class="row">
             <div class="col-xs-12">
               <button
-                type="button"
+                (click)="onAddIngredient()"
                 class="btn btn-success"
-                (click)="onAddIngredient()">Add Ingredient</button>
+                type="button">Add Ingredient
+              </button>
             </div>
           </div>
         </div>
