@@ -1,26 +1,25 @@
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {Injectable} from '@angular/core';
-// import 'rxjs/add/operator/map';
-// import 'rxjs/add/operator/switchMap';
-// import 'rxjs/add/operator/mergeMap';
+import { Actions, Effect } from '@ngrx/effects';
+import { Injectable } from '@angular/core';
+import { fromPromise } from 'rxjs/observable/fromPromise';
+
+import { Router } from '@angular/router';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
-import {fromPromise} from 'rxjs/observable/fromPromise';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/mergeMap';
 
 import * as AuthActions from './auth.actions';
 import * as firebase from 'firebase';
-import {map} from 'rxjs/operators';
-
-import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
 
   @Effect()
-  authSignup = this.actions$.pipe(
-    ofType(AuthActions.TRY_SIGNUP),
-    map((action: AuthActions.TrySignup) => {
+  authSignup = this.actions$
+    .ofType(AuthActions.TRY_SIGNUP)
+    .map((action: AuthActions.TrySignup) => {
       return action.payload;
-    }))
+    })
     .switchMap((authData: {username: string, password: string}) => {
       return fromPromise(firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(authData.username, authData.password));
     })
@@ -41,11 +40,11 @@ export class AuthEffects {
     });
 
   @Effect()
-  authSignin = this.actions$.pipe(
-    ofType(AuthActions.TRY_SIGNIN),
-    map((action: AuthActions.TrySignin) => {
+  authSignin = this.actions$
+    .ofType(AuthActions.TRY_SIGNIN)
+    .map((action: AuthActions.TrySignin) => {
       return action.payload;
-    }))
+    })
   .switchMap((authData: {username: string, password: string}) => {
     return fromPromise(firebase.auth().signInWithEmailAndPassword(authData.username, authData.password));
   })
@@ -66,7 +65,7 @@ export class AuthEffects {
   });
 
   @Effect({dispatch: false})
-  authLogout = this.actions$.pipe(ofType(AuthActions.LOGOUT))
+  authLogout = this.actions$.ofType(AuthActions.LOGOUT)
   .do(() => {
       this.router.navigate(['/']);
   });
