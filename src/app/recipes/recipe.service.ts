@@ -1,6 +1,6 @@
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 
 export class RecipeService {

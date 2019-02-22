@@ -23,7 +23,7 @@ export class DataStorageService {
     })
       .map(
         (recipes) => {
-          for (let recipe of recipes) {
+          for (const recipe of recipes) {
             if (!recipe['ingredients']) {
               recipe['ingredients'] = [];
             }
