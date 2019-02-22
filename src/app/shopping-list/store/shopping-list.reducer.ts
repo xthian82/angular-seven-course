@@ -52,8 +52,10 @@ export function shoppingListReducer(state = initialState, action: ShoppingListAc
       oldIngredients.splice(state.editedIngredientIndex, 1);
       return {
         ...state,
-        ingredients: oldIngredients
-      }
+        ingredients: oldIngredients,
+        editedIngredient: null,
+        editedIngredientIndex: -1
+      };
     case ShoppingListActions.START_EDIT:
       const editedIngredient = {...state.ingredients[action.payload]}
       return {
