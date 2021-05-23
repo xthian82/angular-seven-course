@@ -1,4 +1,4 @@
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Recipe } from '../recipe.model';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Store } from '@ngrx/store';
@@ -7,19 +7,19 @@ import { withLatestFrom, switchMap, map } from 'rxjs/operators';
 
 import * as RecipeActions from '../store/recipe.actions';
 import * as fromRecipe from '../store/recipe.reducers';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class RecipeEffects {
 
   @Effect()
-  recipeFetch = this.actions$.ofType(RecipeActions.FETCH_RECIPES)
-    .pipe(
+  recipeFetch = this.actions$
+    .pipe(ofType(RecipeActions.FETCH_RECIPES),
       switchMap((action: RecipeActions.FetchRecipes) => {
         return this.httpClient.get<Recipe[]>('https://ng-course-recipes-e1b00.firebaseio.com/recipes.json', {
           observe: 'body',
           responseType: 'json'
-        })
+        });
       }), map(
         (recipes) => {
           for (const recipe of recipes) {
@@ -37,9 +37,10 @@ export class RecipeEffects {
 
   @Effect({dispatch: false})
   recipeStore = this.actions$
-    .ofType(RecipeActions.STORE_RECIPES)
-    .pipe(withLatestFrom(this.store.select('recipes')),
+    // .ofType(RecipeActions.STORE_RECIPES)
+    .pipe(ofType(RecipeActions.STORE_RECIPES), withLatestFrom(this.store.select('recipes')),
       switchMap(([action, state]) => {
+        // tslint:disable-next-line:max-line-length
         const req = new HttpRequest('PUT', 'https://ng-course-recipes-e1b00.firebaseio.com/recipes.json', state.recipes, {reportProgress: true});
         return this.httpClient.request(req);
       }));
